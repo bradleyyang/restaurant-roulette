@@ -13,13 +13,11 @@ app.get('/', (req, res) => {
 
 
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-    useUnifiedTopology: true
-})
+mongoose.connect(process.env.MONGO_URI)
   .then(() => {
+    console.log('Connected to the database')
     app.listen(port, () => {
-      console.log(`Example app listening on port ${port}`)
+      console.log(`Listening on port ${port}`)
     })
   })
   .catch((error) => {
