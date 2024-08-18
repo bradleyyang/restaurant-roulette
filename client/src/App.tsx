@@ -1,12 +1,11 @@
-
+import LayoutPage from "./LayoutPage";
 
 function App() {
-
-  return (
-    <>
-      
-    </>
-  )
+    return(
+        <>
+            <LayoutPage/>
+        </>
+    )
 }
 
-export default App
+export default App;
