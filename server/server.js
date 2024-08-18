@@ -1,5 +1,6 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
+const restaurantRoutes = require('./routes/restaurantRoutes');
 
 const bodyParser = require('body-parser');
 const port = process.env.PORT || 3000
@@ -7,9 +8,16 @@ const port = process.env.PORT || 3000
 const express = require('express')
 const app = express()
 
+app.use(bodyParser.json());
+
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.send({
+    "name": "Bradley",
+    "age": 18
+  })
 })
+
+
 
 
 
