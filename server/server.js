@@ -56,5 +56,24 @@ app.get('/restaurants/:id', async (req, res) => {
 });
 
 app.delete('/restaurants', async (req, res) => {
+  const query = { name: "Bradley" };
+  const deleteResult = await Restaurant.deleteOne(query);
+  res.send(deleteResult);
+});
 
-})
+app.put('/restaurants', async (req, res) => {
+  const filter = { name: "Bradley" };
+
+  // this option instructs the method to create a document if no documents match the filter
+  const options = { upsert: true };
+  // create a document that sets the distance
+  const updateDoc = {
+    $set: {
+      name: "David",
+      distance: 100
+    },
+  };
+
+  const updateResult = await Restaurant.updateOne(filter, updateDoc, options);
+  res.send(updateResult);
+});
