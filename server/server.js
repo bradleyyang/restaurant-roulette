@@ -41,10 +41,10 @@ app.get('/restaurants', async (req, res) => {
   }
 });
 
-app.get('/restaurants/:id', async (req, res) => {
+app.get('/restaurant', async (req, res) => {
   try {
-    const { id } = req.params;
-    const restaurant = await Restaurant.findById(id);
+    const query = { name: "Bob's Burgers" };
+    const restaurant = await Restaurant.findOne(query);
 
     if (!restaurant) {
       return res.status(404).send({ message: 'Restaurant not found' });
@@ -57,21 +57,26 @@ app.get('/restaurants/:id', async (req, res) => {
 });
 
 app.delete('/restaurants', async (req, res) => {
-  const query = { name: "Bradley" };
+  const query = { name: "David" };
   const deleteResult = await Restaurant.deleteOne(query);
   res.send(deleteResult);
 });
 
 app.put('/restaurants', async (req, res) => {
-  const filter = { name: "Bradley" };
+  const filter = { name: "Starbucks" };
 
   // this option instructs the method to create a document if no documents match the filter
   const options = { upsert: true };
   // create a document that sets the distance
   const updateDoc = {
     $set: {
-      name: "David",
-      distance: 100
+      name: "McDonalds",
+      open_now: true,
+      formatted_address: "5555 Dundas St W",
+      rating: 4.0,
+      distance: 1.2,
+      price_level: 3,
+      user_ratings_total: 100
     },
   };
 
