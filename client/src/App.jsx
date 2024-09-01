@@ -1,10 +1,21 @@
 
 
 function App() {
+  const handleClick = () => {
+
+  }
 
   return (
     <>
-      Restaurant Roulette
+      <div style={{ textAlign: 'center' }}>
+        Restaurant Roulette
+      </div>
+      <button type="button" onClick={handleClick}>
+        Get random restaurant 
+      </button>
+      <div>
+        
+      </div>
     </>
   )
 }

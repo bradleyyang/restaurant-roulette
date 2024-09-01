@@ -1,6 +1,7 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const Restaurant = require('./models/restaurant');
+const axios = require('axios');
 
 const port = process.env.PORT || 3000
 
@@ -76,4 +77,43 @@ app.put('/restaurants', async (req, res) => {
 
   const updateResult = await Restaurant.updateOne(filter, updateDoc, options);
   res.send(updateResult);
+});
+
+
+app.get('/restaurant-details', async (req, res) => {
+  // Replace with the actual place ID you want to use
+  const placeId = 'ChIJ5_4bHL43K4gRlMRkVLS4ONg'; // Example place ID
+  const fields = 'name,rating,formatted_address,opening_hours,reviews'; // Fields you want to retrieve
+
+  const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=${fields}&key=${process.env.GOOGLE_API_KEY}`;
+
+  try {
+    // Make the HTTP request to the Google Places API
+    const response = await axios.get(url);
+
+    // Send the API response data back to the client
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching restaurant details:', error.message);
+    res.status(500).json({ error: 'Failed to fetch restaurant details' });
+  }
+});
+
+app.get('/nearby-restaurants', async (req, res) => {
+  // Extract query parameters from the request
+  const { keyword = 'restaurant', location = '43.6329141,-79.5445094', radius = 1500, type = 'restaurant' } = req.query;
+
+  // Construct the URL dynamically using the parameters
+  const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=${encodeURIComponent(keyword)}&location=${encodeURIComponent(location)}&radius=${radius}&type=${type}&key=${process.env.GOOGLE_API_KEY}`;
+
+  try {
+    // Make the HTTP request to the Google Places API
+    const response = await axios.get(url);
+
+    // Send the API response data back to the client
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching nearby restaurants:', error.message);
+    res.status(500).json({ error: 'Failed to fetch nearby restaurants' });
+  }
 });
