@@ -8,6 +8,18 @@ const Details = () => {
   const [loading, setLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false); // State to manage visibility
 
+  const [inputValue, setInputValue] = useState('');
+
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value)
+  }
+
+  const handleButtonClick = () => {
+    console.log("Submitted texxt:", inputValue);
+
+    setInputValue('');
+  }
+
   const fetchRestaurantDetails = async () => {
     setLoading(true);
     setError(null); // Reset error state before fetching
@@ -29,6 +41,22 @@ const Details = () => {
 
   return (
     <div>
+      <label>
+        Enter Restaurant:
+        <input
+          type="text"
+          value={inputValue}
+          onChange={handleInputChange}
+          placeholder="Enter restaurant name..."
+          />
+      </label>
+      <button onClick={handleButtonClick}>
+        Enter
+      </button>
+
+
+      <br />
+
       <button onClick={fetchRestaurantDetails}>
         Show Restaurant Details
       </button>

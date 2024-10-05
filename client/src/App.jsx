@@ -7,10 +7,10 @@ const App = () => {
 
   return (
     <>
-      <h1>All Restaurants List</h1>
-      <AllRestaurants />
-      <h1>Details for one restaurant</h1>
-      <RestaurantDetails />
+      {/* <h1>All Restaurants List</h1> */}
+      {/* <AllRestaurants /> */}
+      {/* <h1>Details for one restaurant</h1>
+      <RestaurantDetails /> */}
       <h1>Nearby Restaurants</h1>
       <NearbyRestaurants />
       <h1>Details</h1>

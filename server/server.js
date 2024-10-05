@@ -107,13 +107,20 @@ app.get('/restaurant-details', async (req, res) => {
 });
 
 app.get('/nearby-restaurants', async (req, res) => {
-  // Extract query parameters from the request
-  const { keyword = 'restaurant', location = '43.6329141,-79.5445094', radius = 1500, type = 'restaurant' } = req.query;
-
-  // Construct the URL dynamically using the parameters
-  const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=${encodeURIComponent(keyword)}&location=${encodeURIComponent(location)}&radius=${radius}&type=${type}&key=${process.env.GOOGLE_API_KEY}`;
+  const geolocationurl = `https://www.googleapis.com/geolocation/v1/geolocate?key=${process.env.GOOGLE_API_KEY}`;
 
   try {
+    const geoResponse = await axios.post(geolocationurl, {});
+    const { lat, lng } = geoResponse.data.location;
+
+
+
+    // Extract query parameters from the request
+    const { keyword = 'restaurant', location = `${lat},${lng}`, radius = 1500, type = 'restaurant' } = req.query;
+
+    // Construct the URL dynamically using the parameters
+    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=${encodeURIComponent(keyword)}&location=${encodeURIComponent(location)}&radius=${radius}&type=${type}&key=${process.env.GOOGLE_API_KEY}`;
+
     // Make the HTTP request to the Google Places API
     const response = await axios.get(url);
 
@@ -124,3 +131,5 @@ app.get('/nearby-restaurants', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch nearby restaurants' });
   }
 });
+
+
