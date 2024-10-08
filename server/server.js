@@ -11,7 +11,9 @@ app.use(cors());
 app.use(express.json());
 
 
-
+// Authentication routes
+const authRoutes = require('./routes/auth');
+app.use('/api/auth', authRoutes);
 
 
 mongoose.connect(process.env.MONGO_URI)
@@ -76,5 +78,7 @@ app.get('/nearby-restaurants', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch nearby restaurants' });
   }
 });
+
+
 
 

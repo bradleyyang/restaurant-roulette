@@ -29,10 +29,12 @@ const userSchema = new mongoose.Schema({
     },
     gender: {
         type: String,
+        required: true,
         enum: ["Male", "Female", "Other"],
     },
     phoneNumber: {
-        type: String
+        type: String,
+        required: true
     }
 
 });
