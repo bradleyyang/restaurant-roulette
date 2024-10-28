@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../api_utils.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -81,7 +82,7 @@ class RegisterPageState extends State<RegisterPage> {
       'phoneNumber': phoneNumberController.text,
     };
 
-    const String apiUrl = 'http://10.0.2.2:3000/api/auth/register';
+    final String apiUrl = '${getBaseUrl()}/api/auth/register';
 
     try {
       final response = await http.post(

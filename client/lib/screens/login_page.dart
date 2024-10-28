@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../models/user.dart';
 import '../providers/user_provider.dart';
 import 'dashboard_page.dart';
+import '../api_utils.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -23,7 +24,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> loginUser() async {
-    final String apiUrl = 'http://10.0.2.2:3000/api/auth/login'; // Update with your API URL
+    final String apiUrl =
+        '${getBaseUrl()}/api/auth/login'; // Update with your API URL
 
     final Map<String, String> userData = {
       'username': _usernameController.text,
@@ -40,6 +42,9 @@ class _LoginPageState extends State<LoginPage> {
         headers: {"Content-Type": "application/json"},
         body: json.encode(userData),
       );
+
+      // Check if the widget is still mounted before calling setState
+      if (!mounted) return;
 
       setState(() {
         _isLoading = false; // Hide loading indicator
@@ -60,7 +65,8 @@ class _LoginPageState extends State<LoginPage> {
         );
 
         // Login user
-        UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
+        UserProvider userProvider =
+            Provider.of<UserProvider>(context, listen: false);
         userProvider.login(user);
 
         // Navigate to the dashboard
@@ -70,10 +76,14 @@ class _LoginPageState extends State<LoginPage> {
         );
       } else {
         // Handle error
-        final errorMessage = json.decode(response.body)['message'] ?? 'Login failed';
+        final errorMessage =
+            json.decode(response.body)['message'] ?? 'Login failed';
         showError(errorMessage);
       }
     } catch (error) {
+      // Check if the widget is still mounted before calling setState
+      if (!mounted) return;
+
       setState(() {
         _isLoading = false; // Hide loading indicator on error
       });
@@ -117,10 +127,11 @@ class _LoginPageState extends State<LoginPage> {
             ),
             SizedBox(height: 20.0),
             ElevatedButton(
-              onPressed: _isLoading ? null : loginUser, // Disable button while loading
-              child: _isLoading 
-                ? CircularProgressIndicator() // Show loading indicator
-                : Text('Login'),
+              onPressed:
+                  _isLoading ? null : loginUser, // Disable button while loading
+              child: _isLoading
+                  ? CircularProgressIndicator() // Show loading indicator
+                  : Text('Login'),
             ),
           ],
         ),

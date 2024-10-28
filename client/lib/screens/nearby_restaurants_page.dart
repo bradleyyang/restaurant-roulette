@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'restaurant_details_page.dart';
+import '../api_utils.dart';
 
 class NearbyRestaurantsPage extends StatefulWidget {
   @override
@@ -19,8 +20,8 @@ class _NearbyRestaurantsPageState extends State<NearbyRestaurantsPage> {
   }
 
   Future<void> fetchNearbyRestaurants() async {
-    const String apiUrl =
-        'http://10.0.2.2:3000/nearby-restaurants'; // Your API URL
+    final String apiUrl =
+        '${getBaseUrl()}/nearby-restaurants'; // Your API URL
 
     try {
       final response = await http.get(Uri.parse(apiUrl));

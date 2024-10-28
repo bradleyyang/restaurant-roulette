@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../api_utils.dart';
 
 class RestaurantDetailsPage extends StatefulWidget {
   final String placeName;
@@ -24,7 +25,7 @@ class _RestaurantDetailsPageState extends State<RestaurantDetailsPage> {
 
   Future<void> fetchRestaurantDetails() async {
     final apiUrl =
-        'http://10.0.2.2:3000/restaurant-details?place_name=${Uri.encodeComponent(widget.placeName)}';
+        '${getBaseUrl()}/restaurant-details?place_name=${Uri.encodeComponent(widget.placeName)}';
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
