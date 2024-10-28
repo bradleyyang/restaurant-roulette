@@ -4,12 +4,20 @@ const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: true,
-        minlength: 1
+        minlength: 1,
+        validate: {
+            validator: (value) => value.trim().length > 0,
+            message: 'First name cannot be empty.',
+        },
     },
     lastName: {
         type: String,
         required: true,
-        minlength: 1
+        minlength: 1,
+        validate: {
+            validator: (value) => value.trim().length > 0,
+            message: 'Last name cannot be empty.',
+        },
     },
     password: {
         type: String,
@@ -20,12 +28,17 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         minlength: 1,
-        unique: true
+        unique: true,
+        validate: {
+            validator: (value) => value.trim().length > 0,
+            message: 'Username cannot be empty.',
+        },
     },
     email: {
         type: String,
         required: true,
-
+        unique: true,
+        match: /.+\@.+\..+/,  // Basic email format validation
     },
     gender: {
         type: String,
@@ -34,23 +47,10 @@ const userSchema = new mongoose.Schema({
     },
     phoneNumber: {
         type: String,
-        required: true
-    }
-
+        required: true,
+        match: /^\+?\d{10,15}$/,  // Validates international phone format
+    },
 });
-
-userSchema.path('username').validate(function (value) {
-    return value.trim().length > 0;
-}, 'Username cannot be empty.');
-
-
-userSchema.path('firstName').validate(function (value) {
-    return value.trim().length > 0; 
-}, 'First name cannot be empty.');
-
-userSchema.path('lastName').validate(function (value) {
-    return value.trim().length > 0; 
-}, 'Last name cannot be empty.');
 
 const User = mongoose.model('User', userSchema);
 
