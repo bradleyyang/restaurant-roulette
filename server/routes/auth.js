@@ -72,7 +72,18 @@ router.post('/login', async (req, res) => {
             maxAge: 3600000 // Optional: Set cookie expiration
         });
 
-        res.status(200).json({ message: 'Login successful' });
+        // Send the user information along with the success message
+        res.status(200).json({
+            message: 'Login successful',
+            user: {
+                username: user.username,
+                email: user.email,
+                gender: user.gender,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                phoneNumber: user.phoneNumber
+            }
+        });
 
     } catch (error) {
         res.status(500).json({ message: error.message });
