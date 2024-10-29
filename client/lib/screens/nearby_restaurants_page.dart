@@ -20,16 +20,14 @@ class _NearbyRestaurantsPageState extends State<NearbyRestaurantsPage> {
   }
 
   Future<void> fetchNearbyRestaurants() async {
-    final String apiUrl =
-        '${getBaseUrl()}/nearby-restaurants'; // Your API URL
+    final String apiUrl = '${getBaseUrl()}/nearby-restaurants';
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         setState(() {
-          restaurants =
-              data['results']; // Get the 'results' array from the response
+          restaurants = data['results'];
           isLoading = false;
         });
       } else {
@@ -38,7 +36,7 @@ class _NearbyRestaurantsPageState extends State<NearbyRestaurantsPage> {
     } catch (error) {
       print(error);
       setState(() {
-        isLoading = false; // Stop loading on error
+        isLoading = false;
       });
     }
   }
@@ -66,16 +64,37 @@ class _NearbyRestaurantsPageState extends State<NearbyRestaurantsPage> {
                   itemCount: restaurants.length,
                   itemBuilder: (context, index) {
                     final restaurant = restaurants[index];
+                    final isOpen =
+                        restaurant['opening_hours']?['open_now'] ?? false;
+
                     return Card(
                       elevation: 4,
                       margin: const EdgeInsets.all(8.0),
                       child: ListTile(
+                        leading: Icon(
+                          Icons.circle,
+                          color: isOpen ? Colors.green : Colors.red,
+                          size: 16,
+                        ),
                         title: Text(restaurant['name']),
                         subtitle: Text(restaurant['vicinity']),
-                        trailing: Text(
-                          restaurant['rating'] != null
-                              ? restaurant['rating'].toString()
-                              : 'N/A',
+                        trailing: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              restaurant['rating'] != null
+                                  ? restaurant['rating'].toString()
+                                  : 'N/A',
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                            Text(
+                              isOpen ? 'Open' : 'Closed',
+                              style: TextStyle(
+                                color: isOpen ? Colors.green : Colors.red,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
                         ),
                         onTap: () => openRestaurantDetails(restaurant['name']),
                       ),

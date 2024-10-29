@@ -48,5 +48,8 @@
 
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app requires access to your location while using the app.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This app requires access to your location to provide directions.</string>
+	
 </dict>
 </plist>

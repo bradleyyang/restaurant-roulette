@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../api_utils.dart';
+import 'directions_page.dart'; // Import the DirectionsPage
 
 class RestaurantDetailsPage extends StatefulWidget {
   final String placeName;
@@ -46,6 +47,23 @@ class _RestaurantDetailsPageState extends State<RestaurantDetailsPage> {
       });
       print("Error fetching restaurant details: $e");
     }
+  }
+
+  void navigateToDirectionsPage() {
+    // Use the formatted address for the directions page
+    final restaurantAddress = restaurantDetails?['formatted_address'] ?? '';
+    final restaurantName = restaurantDetails?['name'] ?? '';
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DirectionsPage(
+          restaurantName: restaurantDetails!['name'],
+          restaurantAddress: restaurantDetails![
+              'formatted_address'], // Pass the formatted address
+        ),
+      ),
+    );
   }
 
   @override
@@ -127,6 +145,11 @@ class _RestaurantDetailsPageState extends State<RestaurantDetailsPage> {
                             },
                           ),
                         ),
+                      SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: navigateToDirectionsPage,
+                        child: Text('Find Directions'),
+                      ),
                     ],
                   ),
                 ),

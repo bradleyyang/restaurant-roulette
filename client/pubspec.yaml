@@ -30,6 +30,10 @@ environment:
 dependencies:
   http: 1.2.2
   provider: 6.1.2
+  google_maps_flutter: 2.9.0
+  url_launcher: 6.3.1
+  permission_handler: 11.3.1
+  location: 7.0.1
   flutter:
     sdk: flutter
 
